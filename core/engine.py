@@ -1,5 +1,5 @@
 from analyzer.reentrancy import check_reentrancy
-from analyzer.tx_origin import scan_tx_origin
+from analyzer.dos import check_dos
 
 class AnalyzerEngine:
     def __init__(self, ast, cfg):
@@ -10,7 +10,6 @@ class AnalyzerEngine:
         results = []
 
         results += check_reentrancy(self.ast, self.cfg)
-        results += scan_tx_origin(self.ast)
+        results += check_dos(self.ast, self.cfg)
 
         return results
-

@@ -1,3 +1,5 @@
 /venv
 /__pycache__
 /.pytest_cache
+/tests/reentrancy/__pycache__
+/Note.md
