@@ -2,4 +2,6 @@
 /__pycache__
 /.pytest_cache
 /tests/reentrancy/__pycache__
+/analyzer/__pycache__
+/core/__pycache__
 /Note.md
