@@ -8,13 +8,13 @@ from analyzer.self_destruct     import check_selfdestruct
 from analyzer.unbounded_loop    import check_unbounded_loop
 from analyzer.unused_state_var  import check_unused_state_var
 from core.src_mapper            import SrcMapper
+from core.detector_docs         import annotate_docs
 
 
 class AnalyzerEngine:
     def __init__(self, ast, cfg, file_path: str = "", sources: dict | None = None):
         self.ast      = ast
         self.cfg      = cfg
-        # SrcMapper resolves src strings → file:line:col + clickable URLs
         self._mapper  = SrcMapper(file_path, sources) if file_path else None
 
     def run(self) -> list[dict]:
@@ -30,9 +30,10 @@ class AnalyzerEngine:
         results += check_unbounded_loop(self.ast, self.cfg)
         results += check_unused_state_var(self.ast, self.cfg)
 
-        # Enrich every finding with location info if a mapper is available
-        if self._mapper:
-            for finding in results:
+        # Enrich every finding with docs link + source location
+        for finding in results:
+            annotate_docs(finding)
+            if self._mapper:
                 self._mapper.enrich(finding)
 
         return results
